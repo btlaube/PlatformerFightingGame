@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Player jump
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }

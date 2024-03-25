@@ -22,15 +22,33 @@ public class Gun : MonoBehaviour
         // Get the position of the mouse cursor in the world space
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // Calculate the direction from the gun's position to the mouse cursor position
-        Vector2 direction = (mousePosition - transform.position).normalized;
+        Vector2 direction = (mousePosition - transform.parent.position).normalized; // Adjusted position
         // Calculate the angle in radians
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         // Rotate the gun towards the mouse cursor
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        Debug.Log(angle);
+        float newAngle = angle;
+        if (90.0f < angle && angle < 180.0f)
+        {
+            transform.localScale = new Vector3(transform.parent.parent.localScale.x, -1.0f , 1.0f);
+        }
+        else if (-180.0 < angle && angle < -90.0f)
+        {
+            transform.localScale = new Vector3(transform.parent.parent.localScale.x, -1.0f , 1.0f);
+        }
+        else
+        {
+            transform.localScale = new Vector3(transform.parent.parent.localScale.x, 1.0f , 1.0f);
+        }
+        transform.rotation = Quaternion.AngleAxis(newAngle, Vector3.forward);
     }
+
 
     void Fire()
     {
+
+        GetComponent<AudioManager>().Play("Fire");
+
         // Instantiate the projectile at the fire point position and rotation
         GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 

@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            GetComponent<AudioManager>().Play("Jump");
         }
 
         // Basic attack

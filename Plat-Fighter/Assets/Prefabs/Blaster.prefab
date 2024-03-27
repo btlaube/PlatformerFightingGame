@@ -131,8 +131,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 4084480078079467058, guid: a6b4335e1ea7d064c8ef7cc73b7bc5ed, type: 3}
+  projectileDamage: 2
   firePoint: {fileID: 1416676534754433179}
   projectileForce: 20
+  cooldown:
+    cooldownTime: 0.2
 --- !u!114 &7491534652632897072
 MonoBehaviour:
   m_ObjectHideFlags: 0

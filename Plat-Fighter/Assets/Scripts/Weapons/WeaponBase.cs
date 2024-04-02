@@ -11,10 +11,15 @@ public abstract class WeaponBase : MonoBehaviour
     public Transform firePoint; // The position where the projectile will be instantiated
     public float projectileForce = 20f; // The force at which the projectile will be shot
     [SerializeField] private Cooldown cooldown;
+    [SerializeField] bool canHoldToFire;
+    [SerializeField] bool useAmmo;
+    [SerializeField] int maxAmmo;
+    public int ammoRemaining;
 
     // Start is called before the first frame update
     void Start()
     {
+        ammoRemaining = maxAmmo;
     }
 
     // Update is called once per frame
@@ -22,15 +27,38 @@ public abstract class WeaponBase : MonoBehaviour
     {
         Aim(); // Call the Aim method to rotate the gun towards the mouse cursor
 
-        // Check if the left mouse button is pressed
+        //Checks if the left mouse button is pressed
         if (Input.GetMouseButtonDown(0))
         {
-            if (cooldown.IsCoolingDown) return;
+            if (!canFire()) return;
             Attack(); // Call the attack
+            if (useAmmo) ammoRemaining--;
 
             cooldown.StartCooldown();
+        }
+
+        
+        // Check if the left mouse button is held. If it is held, continue firing
+        if (Input.GetMouseButton(0) && canHoldToFire)
+        {
+            if (!canFire()) return;
+            Attack(); // Call the attack
+            if (useAmmo) ammoRemaining--;
+
+            cooldown.StartCooldown(); //Start cooldown
 
         }
+    }
+
+    bool canFire()
+    {
+        if (cooldown.IsCoolingDown) return false;
+        if (useAmmo)
+        {
+            if (ammoRemaining <= 0) return false;
+        }
+        return true;
+
     }
 
     void Aim()

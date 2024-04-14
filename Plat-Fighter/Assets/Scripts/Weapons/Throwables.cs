@@ -19,7 +19,7 @@ public class Throwables : WeaponBase
         if (projectileScript != null)
         {
             projectileScript.SetProjectileDamage(projectileDamage);
-            projectileScript.SetHomeWeapon(this);
+            projectileScript.SetHomeWeapon(gameObject);
         }
 
         // Check if the Rigidbody2D component exists

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 //Abstract class for all information related to weapons the players use.
@@ -16,6 +17,14 @@ public abstract class WeaponBase : MonoBehaviour
     [SerializeField] int maxAmmo;
     public int ammoRemaining;
 
+    private PlayerInput controls;
+
+    void Awake()
+    {
+        controls = new PlayerInput();
+        controls.Enable();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,10 +34,13 @@ public abstract class WeaponBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Aim(); // Call the Aim method to rotate the gun towards the mouse cursor
+        // Aim(); // Call the Aim method to rotate the gun towards the mouse cursor
+
+        float fireInput = controls.Player.Fire.ReadValue<float>();
+        // Debug.Log(fireInput);
 
         //Checks if the left mouse button is pressed
-        if (Input.GetMouseButtonDown(0))
+        if (fireInput == 1.0f)
         {
             if (!canFire()) return;
             Attack(); // Call the attack
@@ -39,14 +51,12 @@ public abstract class WeaponBase : MonoBehaviour
 
         
         // Check if the left mouse button is held. If it is held, continue firing
-        if (Input.GetMouseButton(0) && canHoldToFire)
+        if (fireInput == 1.0f && canHoldToFire)
         {
             if (!canFire()) return;
             Attack(); // Call the attack
             if (useAmmo) ammoRemaining--;
-
             cooldown.StartCooldown(); //Start cooldown
-
         }
     }
 
@@ -61,30 +71,33 @@ public abstract class WeaponBase : MonoBehaviour
 
     }
 
-    void Aim()
-    {
-        // Get the position of the mouse cursor in the world space
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // Calculate the direction from the gun's position to the mouse cursor position
-        Vector2 direction = (mousePosition - transform.parent.position).normalized; // Adjusted position
-        // Calculate the angle in radians
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        // Rotate the gun towards the mouse cursor
-        float newAngle = angle;
-        if (90.0f < angle && angle < 180.0f)
-        {
-            transform.localScale = new Vector3(transform.parent.parent.localScale.x, -1.0f, 1.0f);
-        }
-        else if (-180.0 < angle && angle < -90.0f)
-        {
-            transform.localScale = new Vector3(transform.parent.parent.localScale.x, -1.0f, 1.0f);
-        }
-        else
-        {
-            transform.localScale = new Vector3(transform.parent.parent.localScale.x, 1.0f, 1.0f);
-        }
-        transform.rotation = Quaternion.AngleAxis(newAngle, Vector3.forward);
-    }
+    // void Aim(InputAction.CallbackContext context)
+    // {
+
+    //     Debug.Log(context);
+
+    //     // Get the position of the mouse cursor in the world space
+    //     Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //     // Calculate the direction from the gun's position to the mouse cursor position
+    //     Vector2 direction = (mousePosition - transform.parent.position).normalized; // Adjusted position
+    //     // Calculate the angle in radians
+    //     float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    //     // Rotate the gun towards the mouse cursor
+    //     float newAngle = angle;
+    //     if (90.0f < angle && angle < 180.0f)
+    //     {
+    //         transform.localScale = new Vector3(transform.parent.parent.localScale.x, -1.0f, 1.0f);
+    //     }
+    //     else if (-180.0 < angle && angle < -90.0f)
+    //     {
+    //         transform.localScale = new Vector3(transform.parent.parent.localScale.x, -1.0f, 1.0f);
+    //     }
+    //     else
+    //     {
+    //         transform.localScale = new Vector3(transform.parent.parent.localScale.x, 1.0f, 1.0f);
+    //     }
+    //     transform.rotation = Quaternion.AngleAxis(newAngle, Vector3.forward);
+    // }
 
     public abstract void Attack();
 

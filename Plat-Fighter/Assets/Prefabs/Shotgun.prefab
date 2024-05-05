@@ -155,6 +155,10 @@ MonoBehaviour:
   firePoint: {fileID: 3880660926653233487}
   projectileForce: 20
   cooldown:
-    cooldownTime: 0
-  bulletsToFire: 6
-  spreadAngle: 18
+    cooldownTime: 0.3
+  canHoldToFire: 0
+  useAmmo: 0
+  maxAmmo: 10
+  ammoRemaining: 0
+  bulletsToFire: 10
+  spreadAngle: 19.2

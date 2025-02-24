@@ -1,4 +1,4 @@
-# PlatformerFightingGame
+# Plat-Fighter(WeaponDemo)
 Plat-Fighter is a weapons Demo for planned multiplayer platformer fighter game.
 
 Plat-Fighter Demo was made by Ben Laube, Noah Janke, Noah Russel and Tiffany Burson.
